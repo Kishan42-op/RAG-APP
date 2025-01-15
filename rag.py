@@ -13,14 +13,17 @@ from langchain_community.embeddings import HuggingFaceBgeEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_groq import ChatGroq
 import os
+from dotenv import load_dotenv
 from fastapi import UploadFile, File
 from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 import sentence_transformers
+# Load environment variables
+load_dotenv()
 
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 
-GROQ_API_KEY="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"
 llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama-3.3-70b-versatile")
 
 
