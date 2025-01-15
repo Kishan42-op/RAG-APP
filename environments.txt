@@ -9,3 +9,4 @@ sentence-transformers
 faiss-cpu
 huggingface-hub
 uvicorn
+python-dotenv
