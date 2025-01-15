@@ -1,7 +1,7 @@
 fastapi==0.95.2
 pydantic==1.10.2
 langchain-core==0.1.5
-langchain-community==0.1.5
+langchain-community==0.3.14
 langchain-text-splitters==0.0.3
 langchain-groq==0.0.1
 bs4==0.0.1
