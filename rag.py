@@ -19,8 +19,23 @@ from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 import sentence_transformers
+import json
+from pathlib import Path
+from pymongo import MongoClient
+from bson import ObjectId
+
 # Load environment variables
 load_dotenv()
+
+username = os.getenv("MONGO_USERNAME")
+password = os.getenv("MONGO_PASSWORD")
+
+# MongoDB configuration
+MONGO_URI = f"mongodb+srv://{username}:{password}@cluster0.pmwy3.mongodb.net/"  # Update this with your MongoDB connection URI
+
+client = MongoClient(MONGO_URI)
+db = client["UserHistory"]
+qa_collection = db["QA"]
 
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 
@@ -162,6 +177,28 @@ def ask_question(request: QuestionRequest):
             {"input": request.question},
             config={"configurable": {"session_id": request.session_id}},
         )
-        return {"answer": response["answer"]}
+        # Get the answer from the RAG response
+        answer = response["answer"]
+
+        # Check if the session already exists in the MongoDB collection
+        session_data = qa_collection.find_one({"session_id": request.session_id})
+        
+        if session_data:
+            # Update the session's question-answer pairs
+            qa_collection.update_one(
+                {"session_id": request.session_id},
+                {"$set": {f"questions.{request.question}": answer}}
+            )
+        else:
+            # Insert a new session document
+            qa_collection.insert_one({
+                "session_id": request.session_id,
+                "questions": {request.question: answer}
+            })
+
+        # Return the response to the client
+        return {"answer": answer}
+
     except Exception as e:
+        # Handle exceptions and return a 500 error
         raise HTTPException(status_code=500, detail=str(e))
