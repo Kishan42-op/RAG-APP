@@ -24,15 +24,15 @@ from pymongo import MongoClient
 # Load environment variables
 load_dotenv()
 
-username = os.getenv("MONGO_USERNAME")
-password = os.getenv("MONGO_PASSWORD")
+#username = os.getenv("MONGO_USERNAME")
+#password = os.getenv("MONGO_PASSWORD")
 
 # MongoDB configuration
-MONGO_URI = "mongodb+srv://kishankachhadiya:RatI027pNWmdliE3@cluster0.pmwy3.mongodb.net/"  # Update this with your MongoDB connection URI
+#MONGO_URI = "mongodb+srv://kishankachhadiya:RatI027pNWmdliE3@cluster0.pmwy3.mongodb.net/"  # Update this with your MongoDB connection URI
 
-client = MongoClient(MONGO_URI)
-db = client["UserHistory"]
-qa_collection = db["QA"]
+#client = MongoClient(MONGO_URI)
+#db = client["UserHistory"]
+#qa_collection = db["QA"]
 
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 
@@ -178,20 +178,20 @@ def ask_question(request: QuestionRequest):
         answer = response["answer"]
 
         # Check if the session already exists in the MongoDB collection
-        session_data = qa_collection.find_one({"session_id": request.session_id})
+        #session_data = qa_collection.find_one({"session_id": request.session_id})
         
-        if session_data:
+        #if session_data:
             # Update the session's question-answer pairs
-            qa_collection.update_one(
-                {"session_id": request.session_id},
-                {"$set": {f"questions.{request.question}": answer}}
-            )
-        else:
+            #qa_collection.update_one(
+                #{"session_id": request.session_id},
+                #{"$set": {f"questions.{request.question}": answer}}
+            #)
+        #else:
             # Insert a new session document
-            qa_collection.insert_one({
-                "session_id": request.session_id,
-                "questions": {request.question: answer}
-            })
+            #qa_collection.insert_one({
+                #"session_id": request.session_id,
+                #"questions": {request.question: answer}
+            #})
 
         # Return the response to the client
         return {"answer": answer}
