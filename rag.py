@@ -28,7 +28,7 @@ username = os.getenv("MONGO_USERNAME")
 password = os.getenv("MONGO_PASSWORD")
 
 # MongoDB configuration
-MONGO_URI = f"mongodb+srv://{username}:{password}@cluster0.pmwy3.mongodb.net/"  # Update this with your MongoDB connection URI
+MONGO_URI = "mongodb+srv://kishankachhadiya:RatI027pNWmdliE3@cluster0.pmwy3.mongodb.net/"  # Update this with your MongoDB connection URI
 
 client = MongoClient(MONGO_URI)
 db = client["UserHistory"]
