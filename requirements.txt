@@ -11,3 +11,4 @@ huggingface-hub==0.26.3
 uvicorn==0.32.1
 python-dotenv==1.0.1
 python-multipart==0.0.20
+pymongo==4.10.1
