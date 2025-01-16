@@ -19,10 +19,7 @@ from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 import sentence_transformers
-import json
-from pathlib import Path
 from pymongo import MongoClient
-from bson import ObjectId
 
 # Load environment variables
 load_dotenv()
